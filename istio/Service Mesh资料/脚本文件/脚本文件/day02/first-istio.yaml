@@ -1,0 +1,32 @@
+apiVersion: apps/v1 ## 定义了一个版本
+kind: Deployment ##资源类型是Deployment
+metadata:
+  name: first-istio 
+spec:
+  selector:
+    matchLabels:
+      app: first-istio
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: first-istio
+    spec:
+      containers:
+      - name: first-istio ##容器名字  下面容器的镜像
+        image: registry.cn-hangzhou.aliyuncs.com/sixupiaofei/spring-docker-demo:1.0
+        ports:
+        - containerPort: 8080 ##容器的端口
+---
+apiVersion: v1
+kind: Service ##资源类型是Service
+metadata:
+  name: first-istio ##资源名字first-istio
+spec:
+  ports:
+  - port: 80 ##对外暴露80
+    protocol: TCP ##tcp协议
+    targetPort: 8080 ##重定向到8080端口
+  selector:
+    app: first-istio ##匹配合适的label，也就是找到合适pod
+  type: ClusterIP ## Service类型ClusterIP

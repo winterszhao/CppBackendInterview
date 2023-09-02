@@ -1,0 +1,339 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    deprecated.daemonset.template.generation: "1"
+    io.tencent.bcs.app.appid: "454"
+    io.tencent.bcs.cluster: BCS-K8S-40302
+    io.tencent.bcs.clusterid: BCS-K8S-40302
+    io.tencent.bcs.kind: k8s
+    io.tencent.bcs.namespace: hlmj3dout
+    io.tencent.bkdata.baseall.dataid: "6566"
+    io.tencent.bkdata.container.stdlog.dataid: "524855"
+    io.tencent.paas.createTime: "2023-04-04 16:25:30"
+    io.tencent.paas.creator: kadinzhu
+    io.tencent.paas.instanceid: "70729"
+    io.tencent.paas.projectid: b8a8384fa1bf420eb494ea5d310395bc
+    io.tencent.paas.source_type: template
+    io.tencent.paas.templateid: "4701"
+    io.tencent.paas.updateTime: "2023-04-04 16:25:30"
+    io.tencent.paas.updator: kadinzhu
+    io.tencent.paas.version: "10"
+    io.tencent.paas.versionid: "186964"
+    io.tencent.paas.webCache: '{"volumes": [{"type": "hostPath", "name": "logpath",
+      "source": "/data/log/"}, {"type": "hostPath", "name": "shmfile", "source": "/data"}],
+      "hostAliasesCache": [], "isUserConstraint": false, "remarkListCache": [{"key":
+      "", "value": ""}], "labelListCache": [{"key": "k8s-app", "value": "balance-tool-release-20230404",
+      "isSelector": true, "disabled": false}], "logLabelListCache": [{"key": "", "value":
+      ""}], "isMetric": false, "metricIdList": [], "affinityYaml": "", "nodeSelectorList":
+      [{"key": "dedicated", "value": "gamesvr"}]}'
+  creationTimestamp: "2023-04-04T08:25:30Z"
+  generation: 1
+  labels:
+    io.tencent.bcs.app.appid: "454"
+    io.tencent.bcs.cluster: BCS-K8S-40302
+    io.tencent.bcs.clusterid: BCS-K8S-40302
+    io.tencent.bcs.kind: k8s
+    io.tencent.bcs.namespace: hlmj3dout
+    io.tencent.bkdata.baseall.dataid: "6566"
+    io.tencent.bkdata.container.stdlog.dataid: "524855"
+    io.tencent.paas.K8sDaemonSet.balance-tool-release-20230404: balance-tool-release-20230404
+    io.tencent.paas.instanceid: "70729"
+    io.tencent.paas.projectid: b8a8384fa1bf420eb494ea5d310395bc
+    io.tencent.paas.source_type: template
+    io.tencent.paas.templateid: "4701"
+    io.tencent.paas.version: "10"
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:deprecated.daemonset.template.generation: {}
+          f:io.tencent.bcs.app.appid: {}
+          f:io.tencent.bcs.cluster: {}
+          f:io.tencent.bcs.clusterid: {}
+          f:io.tencent.bcs.kind: {}
+          f:io.tencent.bcs.namespace: {}
+          f:io.tencent.bkdata.baseall.dataid: {}
+          f:io.tencent.bkdata.container.stdlog.dataid: {}
+          f:io.tencent.paas.createTime: {}
+          f:io.tencent.paas.creator: {}
+          f:io.tencent.paas.instanceid: {}
+          f:io.tencent.paas.projectid: {}
+          f:io.tencent.paas.source_type: {}
+          f:io.tencent.paas.templateid: {}
+          f:io.tencent.paas.updateTime: {}
+          f:io.tencent.paas.updator: {}
+          f:io.tencent.paas.version: {}
+          f:io.tencent.paas.versionid: {}
+          f:io.tencent.paas.webCache: {}
+        f:labels:
+          .: {}
+          f:io.tencent.bcs.app.appid: {}
+          f:io.tencent.bcs.cluster: {}
+          f:io.tencent.bcs.clusterid: {}
+          f:io.tencent.bcs.kind: {}
+          f:io.tencent.bcs.namespace: {}
+          f:io.tencent.bkdata.baseall.dataid: {}
+          f:io.tencent.bkdata.container.stdlog.dataid: {}
+          f:io.tencent.paas.K8sDaemonSet.balance-tool-release-20230404: {}
+          f:io.tencent.paas.instanceid: {}
+          f:io.tencent.paas.projectid: {}
+          f:io.tencent.paas.source_type: {}
+          f:io.tencent.paas.templateid: {}
+          f:io.tencent.paas.version: {}
+      f:spec:
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:template:
+          f:metadata:
+            f:labels:
+              .: {}
+              f:io.tencent.bcs.app.appid: {}
+              f:io.tencent.bcs.cluster: {}
+              f:io.tencent.bcs.clusterid: {}
+              f:io.tencent.bcs.controller.name: {}
+              f:io.tencent.bcs.controller.type: {}
+              f:io.tencent.bcs.kind: {}
+              f:io.tencent.bcs.monitor.level: {}
+              f:io.tencent.bcs.namespace: {}
+              f:io.tencent.bkdata.baseall.dataid: {}
+              f:io.tencent.bkdata.container.stdlog.dataid: {}
+              f:io.tencent.paas.K8sDaemonSet.balance-tool-release-20230404: {}
+              f:io.tencent.paas.instanceid: {}
+              f:io.tencent.paas.projectid: {}
+              f:io.tencent.paas.source_type: {}
+              f:io.tencent.paas.templateid: {}
+              f:io.tencent.paas.version: {}
+              f:k8s-app: {}
+          f:spec:
+            f:containers:
+              k:{"name":"hlsvr"}:
+                .: {}
+                f:env:
+                  .: {}
+                  k:{"name":"DEBUG_START"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"REGEN_FAN"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_app_appid"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_cluster"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_controller_name"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_controller_type"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_custom_labels"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_namespace"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bkdata_baseall_dataid"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bkdata_container_stdlog_dataid"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                f:image: {}
+                f:imagePullPolicy: {}
+                f:name: {}
+                f:resources:
+                  .: {}
+                  f:limits:
+                    .: {}
+                    f:cpu: {}
+                    f:memory: {}
+                  f:requests:
+                    .: {}
+                    f:cpu: {}
+                    f:memory: {}
+                f:securityContext:
+                  .: {}
+                  f:privileged: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+                f:volumeMounts:
+                  .: {}
+                  k:{"mountPath":"/data"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                  k:{"mountPath":"/data/log/"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+            f:dnsPolicy: {}
+            f:hostIPC: {}
+            f:nodeSelector:
+              .: {}
+              f:dedicated: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext: {}
+            f:terminationGracePeriodSeconds: {}
+            f:tolerations: {}
+            f:volumes:
+              .: {}
+              k:{"name":"logpath"}:
+                .: {}
+                f:hostPath:
+                  .: {}
+                  f:path: {}
+                  f:type: {}
+                f:name: {}
+              k:{"name":"shmfile"}:
+                .: {}
+                f:hostPath:
+                  .: {}
+                  f:path: {}
+                  f:type: {}
+                f:name: {}
+        f:updateStrategy:
+          f:rollingUpdate:
+            .: {}
+            f:maxUnavailable: {}
+          f:type: {}
+    manager: OpenAPI-Generator
+    operation: Update
+    time: "2023-04-04T08:25:30Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:currentNumberScheduled: {}
+        f:desiredNumberScheduled: {}
+        f:numberAvailable: {}
+        f:numberMisscheduled: {}
+        f:numberReady: {}
+        f:observedGeneration: {}
+        f:updatedNumberScheduled: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2023-07-03T06:54:03Z"
+  name: balance-tool-release-20230404
+  namespace: hlmj3dout
+  resourceVersion: "987813568"
+  selfLink: /apis/apps/v1/namespaces/hlmj3dout/daemonsets/balance-tool-release-20230404
+  uid: c03d543e-dbbb-42b3-a082-85b1a24d3cd6
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: balance-tool-release-20230404
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.tencent.bcs.app.appid: "454"
+        io.tencent.bcs.cluster: BCS-K8S-40302
+        io.tencent.bcs.clusterid: BCS-K8S-40302
+        io.tencent.bcs.controller.name: balance-tool-release-20230404
+        io.tencent.bcs.controller.type: DaemonSet
+        io.tencent.bcs.kind: k8s
+        io.tencent.bcs.monitor.level: general
+        io.tencent.bcs.namespace: hlmj3dout
+        io.tencent.bkdata.baseall.dataid: "6566"
+        io.tencent.bkdata.container.stdlog.dataid: "524855"
+        io.tencent.paas.K8sDaemonSet.balance-tool-release-20230404: balance-tool-release-20230404
+        io.tencent.paas.instanceid: "70729"
+        io.tencent.paas.projectid: b8a8384fa1bf420eb494ea5d310395bc
+        io.tencent.paas.source_type: template
+        io.tencent.paas.templateid: "4701"
+        io.tencent.paas.version: "10"
+        k8s-app: balance-tool-release-20230404
+    spec:
+      containers:
+      - env:
+        - name: DEBUG_START
+          value: "0"
+        - name: REGEN_FAN
+          value: "0"
+        - name: io_tencent_bcs_cluster
+          value: BCS-K8S-40302
+        - name: io_tencent_bcs_namespace
+          value: hlmj3dout
+        - name: io_tencent_bcs_app_appid
+          value: "454"
+        - name: io_tencent_bkdata_baseall_dataid
+          value: "6566"
+        - name: io_tencent_bkdata_container_stdlog_dataid
+          value: "524855"
+        - name: io_tencent_bcs_controller_type
+          value: DaemonSet
+        - name: io_tencent_bcs_controller_name
+          value: balance-tool-release-20230404
+        - name: io_tencent_bcs_custom_labels
+          value: '{}'
+        image: mirrors.tencent.com/happysvr/balance_tool:2023040416.release
+        imagePullPolicy: IfNotPresent
+        name: hlsvr
+        resources:
+          limits:
+            cpu: "1"
+            memory: 5000Mi
+          requests:
+            cpu: "1"
+            memory: 3000Mi
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/log/
+          name: logpath
+        - mountPath: /data
+          name: shmfile
+      dnsPolicy: ClusterFirst
+      hostIPC: true
+      nodeSelector:
+        dedicated: gamesvr
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: gamesvr
+      volumes:
+      - hostPath:
+          path: /data/log/
+          type: ""
+        name: logpath
+      - hostPath:
+          path: /data
+          type: ""
+        name: shmfile
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+status:
+  currentNumberScheduled: 17
+  desiredNumberScheduled: 17
+  numberAvailable: 17
+  numberMisscheduled: 0
+  numberReady: 17
+  observedGeneration: 1
+  updatedNumberScheduled: 17

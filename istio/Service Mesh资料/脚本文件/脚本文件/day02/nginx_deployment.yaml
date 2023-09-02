@@ -1,0 +1,21 @@
+apiVersion: apps/v1 ## 定义了一个版本
+kind: Deployment ##k8s资源类型是Deployment
+metadata: ## metadata这个KEY对应的值为一个Maps
+  name: nginx-deployment ##资源名字 nginx-deployment
+  labels: ##将新建的Pod附加Label
+    app: nginx ##一个键值对为key=app,valuen=ginx的Label。
+spec: #以下其实就是replicaSet的配置
+  replicas: 3 ##副本数为3个，也就是有3个pod
+  selector: ##匹配具有同一个label属性的pod标签
+    matchLabels: ##寻找合适的label，一个键值对为key=app,value=nginx的Labe
+      app: nginx
+  template: #模板
+    metadata:
+      labels: ##将新建的Pod附加Label
+        app: nginx
+    spec:
+      containers:  ##定义容器
+      - name: nginx ##容器名称
+        image: nginx:1.7.9 ##镜像地址
+        ports:
+        - containerPort: 80 ##容器端口

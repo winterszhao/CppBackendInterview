@@ -1,0 +1,666 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "21"
+    io.tencent.bcs.clusterid: BCS-K8S-40302
+    io.tencent.paas.creator: qipingma
+    io.tencent.paas.updator: yuhuayang
+    io.tencent.paas.version: 1.1.3
+    meta.helm.sh/release-name: hlmjusb3
+    meta.helm.sh/release-namespace: hlmj3dout
+  creationTimestamp: "2022-02-22T06:55:26Z"
+  generation: 682
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    io.tencent.bcs.clusterid: BCS-K8S-40302
+    io.tencent.bcs.controller.name: hlmjusb3
+    io.tencent.bcs.controller.type: Deployment
+    io.tencent.bcs.namespace: hlmj3dout
+    io.tencent.paas.projectid: b8a8384fa1bf420eb494ea5d310395bc
+    io.tencent.paas.source_type: helm
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:io.tencent.bcs.clusterid: {}
+          f:io.tencent.paas.creator: {}
+          f:io.tencent.paas.version: {}
+          f:meta.helm.sh/release-name: {}
+          f:meta.helm.sh/release-namespace: {}
+        f:labels:
+          .: {}
+          f:app.kubernetes.io/managed-by: {}
+          f:io.tencent.bcs.clusterid: {}
+          f:io.tencent.bcs.controller.name: {}
+          f:io.tencent.bcs.controller.type: {}
+          f:io.tencent.bcs.namespace: {}
+          f:io.tencent.paas.projectid: {}
+          f:io.tencent.paas.source_type: {}
+      f:spec:
+        f:progressDeadlineSeconds: {}
+        f:replicas: {}
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:strategy:
+          f:rollingUpdate:
+            .: {}
+            f:maxSurge: {}
+            f:maxUnavailable: {}
+          f:type: {}
+        f:template:
+          f:metadata:
+            f:annotations:
+              .: {}
+              f:proxy.istio.io/config: {}
+              f:sidecar.istio.io/proxyCPU: {}
+              f:sidecar.istio.io/proxyCPULimit: {}
+              f:sidecar.istio.io/proxyMemory: {}
+              f:sidecar.istio.io/proxyMemoryLimit: {}
+              f:traffic.sidecar.istio.io/includeInboundPorts: {}
+            f:labels:
+              .: {}
+              f:app: {}
+              f:app-hlsvr: {}
+              f:io.tencent.bcs.clusterid: {}
+              f:io.tencent.bcs.controller.name: {}
+              f:io.tencent.bcs.controller.type: {}
+              f:io.tencent.bcs.namespace: {}
+              f:io.tencent.paas.projectid: {}
+              f:io.tencent.paas.source_type: {}
+              f:isCanary: {}
+              f:k8s-app: {}
+              f:oneLable: {}
+          f:spec:
+            f:affinity:
+              .: {}
+              f:podAntiAffinity:
+                .: {}
+                f:preferredDuringSchedulingIgnoredDuringExecution: {}
+            f:containers:
+              k:{"name":"hlsvr"}:
+                .: {}
+                f:env:
+                  .: {}
+                  k:{"name":"DK_ATTR_HOOK_NODE_IP"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:fieldRef:
+                        .: {}
+                        f:apiVersion: {}
+                        f:fieldPath: {}
+                  k:{"name":"DK_FrameConfig_ini_TransformThread_MasterDBHost"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:configMapKeyRef:
+                        .: {}
+                        f:key: {}
+                        f:name: {}
+                  k:{"name":"DK_FrameConfig_ini_TransformThread_MasterDBName"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:configMapKeyRef:
+                        .: {}
+                        f:key: {}
+                        f:name: {}
+                  k:{"name":"DK_FrameConfig_ini_TransformThread_MasterDBPassword"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:configMapKeyRef:
+                        .: {}
+                        f:key: {}
+                        f:name: {}
+                  k:{"name":"DK_FrameConfig_ini_TransformThread_MasterDBPort"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:configMapKeyRef:
+                        .: {}
+                        f:key: {}
+                        f:name: {}
+                  k:{"name":"DK_FrameConfig_ini_TransformThread_MasterDBUser"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:configMapKeyRef:
+                        .: {}
+                        f:key: {}
+                        f:name: {}
+                  k:{"name":"DK_LISTEN_ADRR"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"DK_LISTEN_ADRR_ALT"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"DK_METRICS_ADDR"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"DK_NODE_IP"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:fieldRef:
+                        .: {}
+                        f:apiVersion: {}
+                        f:fieldPath: {}
+                  k:{"name":"DK_POD_HARD_LIMIT_CPU"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:resourceFieldRef:
+                        .: {}
+                        f:divisor: {}
+                        f:resource: {}
+                  k:{"name":"DK_POD_HARD_LIMIT_MEM"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:resourceFieldRef:
+                        .: {}
+                        f:divisor: {}
+                        f:resource: {}
+                  k:{"name":"DK_POD_REQ_LIMIT_CPU"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:resourceFieldRef:
+                        .: {}
+                        f:divisor: {}
+                        f:resource: {}
+                  k:{"name":"DK_POD_REQ_LIMIT_MEM"}:
+                    .: {}
+                    f:name: {}
+                    f:valueFrom:
+                      .: {}
+                      f:resourceFieldRef:
+                        .: {}
+                        f:divisor: {}
+                        f:resource: {}
+                  k:{"name":"DK_SYSLOG_TARGET"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"GOTRACEBACK"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"GRPC_DNS_RESOLVER"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"HL_K8S_SERVICE"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"HL_NAMESPACE_NAME"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"HL_SERVICE_NAME"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"RAINBOW_CLIENT_INFOS"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"USE_PROMETHEUS"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"UseRainbow"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"UseTransform"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_custom_labels"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"io_tencent_bcs_namespace"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"isCanary"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                f:imagePullPolicy: {}
+                f:livenessProbe:
+                  .: {}
+                  f:failureThreshold: {}
+                  f:httpGet:
+                    .: {}
+                    f:path: {}
+                    f:port: {}
+                    f:scheme: {}
+                  f:initialDelaySeconds: {}
+                  f:periodSeconds: {}
+                  f:successThreshold: {}
+                  f:timeoutSeconds: {}
+                f:name: {}
+                f:ports:
+                  .: {}
+                  k:{"containerPort":9100,"protocol":"TCP"}:
+                    .: {}
+                    f:containerPort: {}
+                    f:name: {}
+                    f:protocol: {}
+                  k:{"containerPort":50051,"protocol":"TCP"}:
+                    .: {}
+                    f:containerPort: {}
+                    f:name: {}
+                    f:protocol: {}
+                f:readinessProbe:
+                  .: {}
+                  f:failureThreshold: {}
+                  f:httpGet:
+                    .: {}
+                    f:path: {}
+                    f:port: {}
+                    f:scheme: {}
+                  f:initialDelaySeconds: {}
+                  f:periodSeconds: {}
+                  f:successThreshold: {}
+                  f:timeoutSeconds: {}
+                f:resources:
+                  .: {}
+                  f:limits:
+                    .: {}
+                    f:memory: {}
+                  f:requests:
+                    .: {}
+                    f:cpu: {}
+                    f:memory: {}
+                f:securityContext:
+                  .: {}
+                  f:privileged: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+                f:volumeMounts:
+                  .: {}
+                  k:{"mountPath":"/data/NodeLogPath/"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                  k:{"mountPath":"/data/corefile/"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                  k:{"mountPath":"/data/log/"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+                  k:{"mountPath":"/hlrun/share/"}:
+                    .: {}
+                    f:mountPath: {}
+                    f:name: {}
+            f:dnsPolicy: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext:
+              .: {}
+              f:sysctls: {}
+            f:terminationGracePeriodSeconds: {}
+            f:topologySpreadConstraints:
+              .: {}
+              k:{"topologyKey":"podTopologySpreadHallKey","whenUnsatisfiable":"ScheduleAnyway"}:
+                .: {}
+                f:labelSelector: {}
+                f:maxSkew: {}
+                f:topologyKey: {}
+                f:whenUnsatisfiable: {}
+            f:volumes:
+              .: {}
+              k:{"name":"corefiles"}:
+                .: {}
+                f:hostPath:
+                  .: {}
+                  f:path: {}
+                  f:type: {}
+                f:name: {}
+              k:{"name":"happygame-share-volume"}:
+                .: {}
+                f:emptyDir: {}
+                f:name: {}
+              k:{"name":"logpath"}:
+                .: {}
+                f:hostPath:
+                  .: {}
+                  f:path: {}
+                  f:type: {}
+                f:name: {}
+    manager: helm
+    operation: Update
+    time: "2022-11-22T06:45:23Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:io.tencent.paas.updator: {}
+      f:spec:
+        f:template:
+          f:metadata:
+            f:annotations:
+              f:happygame/rainbowinfo: {}
+          f:spec:
+            f:containers:
+              k:{"name":"hlsvr"}:
+                f:image: {}
+                f:resources:
+                  f:limits:
+                    f:cpu: {}
+    manager: bcs-helm-manager
+    operation: Update
+    time: "2023-03-10T03:15:34Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:deployment.kubernetes.io/revision: {}
+      f:status:
+        f:availableReplicas: {}
+        f:conditions:
+          .: {}
+          k:{"type":"Available"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Progressing"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:observedGeneration: {}
+        f:readyReplicas: {}
+        f:replicas: {}
+        f:updatedReplicas: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2023-08-15T12:30:32Z"
+  name: hlmjusb3
+  namespace: hlmj3dout
+  resourceVersion: "1028250638"
+  selfLink: /apis/apps/v1/namespaces/hlmj3dout/deployments/hlmjusb3
+  uid: 02ab71d3-213d-4450-8e09-65a78a626af7
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 6
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: hlmjusb3
+      isCanary: "false"
+      k8s-app: hlmjusb3
+      oneLable: hlmjusbonline
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        happygame/rainbowinfo: '{"hold_application_until_configagent_starts": true,
+          "namespace":"hlmj3dout", "appname":"hlmjusb3", "savepath":"/hlrun/share",
+          "optionpath":"LogicService", "extendinfo": {}, "inject": true, "transforminfo":
+          {"open": true, "business_name": "HLMJUSB", "server_fe_type":"160", "transform_fe_list":"406"}
+          , "group":"online", "clientinfo":"podinfo:hlmjusb3-online|imagetag:mirrors.tencent.com/happysvr/hlmjusb_happy_out-6|"}'
+        proxy.istio.io/config: |
+          holdApplicationUntilProxyStarts: true
+        sidecar.istio.io/proxyCPU: 100m
+        sidecar.istio.io/proxyCPULimit: "2"
+        sidecar.istio.io/proxyMemory: 400Mi
+        sidecar.istio.io/proxyMemoryLimit: 1500Mi
+        traffic.sidecar.istio.io/includeInboundPorts: "1"
+      creationTimestamp: null
+      labels:
+        app: hlmjusb3
+        app-hlsvr: "true"
+        io.tencent.bcs.clusterid: BCS-K8S-40302
+        io.tencent.bcs.controller.name: hlmjusb3
+        io.tencent.bcs.controller.type: Deployment
+        io.tencent.bcs.namespace: hlmj3dout
+        io.tencent.paas.projectid: b8a8384fa1bf420eb494ea5d310395bc
+        io.tencent.paas.source_type: helm
+        isCanary: "false"
+        k8s-app: hlmjusb3
+        oneLable: hlmjusbonline
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: k8s-app
+                  operator: In
+                  values:
+                  - hlmjusb3
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 10
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: k8s-app
+                  operator: In
+                  values:
+                  - hlmjusb3
+              topologyKey: kubernetes.io/hostname
+            weight: 90
+      containers:
+      - env:
+        - name: GRPC_DNS_RESOLVER
+          value: native
+        - name: HL_K8S_SERVICE
+          value: "1"
+        - name: HL_SERVICE_NAME
+          value: hlmjusb3
+        - name: HL_NAMESPACE_NAME
+          value: hlmj3dout
+        - name: RAINBOW_CLIENT_INFOS
+          value: podinfo:hlmjusb3-release|
+        - name: USE_PROMETHEUS
+          value: "1"
+        - name: UseRainbow
+          value: "1"
+        - name: UseTransform
+          value: "1"
+        - name: isCanary
+          value: "false"
+        - name: DK_SYSLOG_TARGET
+          value: udp://happy.cgigo.rsyslog.oa.com:514
+        - name: DK_NODE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: DK_ATTR_HOOK_NODE_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: GOTRACEBACK
+          value: crash
+        - name: DK_LISTEN_ADRR
+          value: 0.0.0.0:50051
+        - name: DK_LISTEN_ADRR_ALT
+          value: 0.0.0.0:50052
+        - name: DK_METRICS_ADDR
+          value: 0.0.0.0:9100
+        - name: DK_FrameConfig_ini_TransformThread_MasterDBHost
+          valueFrom:
+            configMapKeyRef:
+              key: DK_FrameConfig_ini_TransformThread_MasterDBHost
+              name: happygame-transform-config-goframe
+        - name: DK_FrameConfig_ini_TransformThread_MasterDBName
+          valueFrom:
+            configMapKeyRef:
+              key: DK_FrameConfig_ini_TransformThread_MasterDBName
+              name: happygame-transform-config-goframe
+        - name: DK_FrameConfig_ini_TransformThread_MasterDBPassword
+          valueFrom:
+            configMapKeyRef:
+              key: DK_FrameConfig_ini_TransformThread_MasterDBPassword
+              name: happygame-transform-config-goframe
+        - name: DK_FrameConfig_ini_TransformThread_MasterDBPort
+          valueFrom:
+            configMapKeyRef:
+              key: DK_FrameConfig_ini_TransformThread_MasterDBPort
+              name: happygame-transform-config-goframe
+        - name: DK_FrameConfig_ini_TransformThread_MasterDBUser
+          valueFrom:
+            configMapKeyRef:
+              key: DK_FrameConfig_ini_TransformThread_MasterDBUser
+              name: happygame-transform-config-goframe
+        - name: DK_POD_REQ_LIMIT_CPU
+          valueFrom:
+            resourceFieldRef:
+              divisor: 1m
+              resource: requests.cpu
+        - name: DK_POD_REQ_LIMIT_MEM
+          valueFrom:
+            resourceFieldRef:
+              divisor: 1Mi
+              resource: requests.memory
+        - name: DK_POD_HARD_LIMIT_CPU
+          valueFrom:
+            resourceFieldRef:
+              divisor: 1m
+              resource: limits.cpu
+        - name: DK_POD_HARD_LIMIT_MEM
+          valueFrom:
+            resourceFieldRef:
+              divisor: 1Mi
+              resource: limits.memory
+        - name: io_tencent_bcs_namespace
+          value: hlmj3dout
+        - name: io_tencent_bcs_custom_labels
+          value: '{}'
+        image: mirrors.tencent.com/happysvr/hlmjusb_happy_out:6
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /healthy
+            port: http-metrics
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: hlsvr
+        ports:
+        - containerPort: 50051
+          name: grpc
+          protocol: TCP
+        - containerPort: 9100
+          name: http-metrics
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /ready
+            port: http-metrics
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 8Gi
+          requests:
+            cpu: 890m
+            memory: 1800Mi
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/corefile/
+          name: corefiles
+        - mountPath: /hlrun/share/
+          name: happygame-share-volume
+        - mountPath: /data/log/
+          name: logpath
+        - mountPath: /data/NodeLogPath/
+          name: logpath
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        sysctls:
+        - name: net.ipv4.tcp_timestamps
+          value: "0"
+      terminationGracePeriodSeconds: 10
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            oneLable: hlmjusbonline
+        maxSkew: 1
+        topologyKey: podTopologySpreadHallKey
+        whenUnsatisfiable: ScheduleAnyway
+      volumes:
+      - hostPath:
+          path: /data/corefile/
+          type: ""
+        name: corefiles
+      - emptyDir: {}
+        name: happygame-share-volume
+      - hostPath:
+          path: /data/log/
+          type: ""
+        name: logpath
+status:
+  availableReplicas: 6
+  conditions:
+  - lastTransitionTime: "2022-02-22T06:55:26Z"
+    lastUpdateTime: "2023-07-07T07:46:48Z"
+    message: ReplicaSet "hlmjusb3-58876f5f8f" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2023-08-15T12:30:32Z"
+    lastUpdateTime: "2023-08-15T12:30:32Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 682
+  readyReplicas: 6
+  replicas: 6
+  updatedReplicas: 6

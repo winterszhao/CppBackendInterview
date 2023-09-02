@@ -1,0 +1,33 @@
+apiVersion: apps/v1 ## 定义了一个版本
+kind: Deployment ##资源类型是Deployment
+metadata: ## metadata这个KEY对应的值为一个Maps
+  name: whoami-deployment ##资源名字
+  labels: ##将新建的Pod附加Label
+    app: whoami ##key=app:value=whoami
+spec: ##资源它描述了对象的
+  replicas: 3 ##副本数为1个，只会有一个pod
+  selector: ##匹配具有同一个label属性的pod标签
+    matchLabels: ##匹配合适的label
+      app: whoami
+  template: ##template其实就是对Pod对象的定义  (模板)
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+      - name: whoami ##容器名字  下面容器的镜像
+        image: jwilder/whoami
+        ports:
+        - containerPort: 8000 ##容器的端口
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-service
+spec:
+  ports:
+  - port: 80   
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: whoami

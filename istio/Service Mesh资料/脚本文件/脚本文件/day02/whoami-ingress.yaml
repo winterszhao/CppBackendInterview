@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: whoami-ingress
+spec:
+  rules: # 定义规则
+  - host: whoami.qy.com  # 定义访问域名
+    http:
+      paths:
+      - path: / # 定义路径规则，/表示没有设置任何路径规则
+        backend:
+          serviceName: whoami-service  # 把请求转发给service资源，这个service就是我们前面运行的service
+          servicePort: 80 # service的端口

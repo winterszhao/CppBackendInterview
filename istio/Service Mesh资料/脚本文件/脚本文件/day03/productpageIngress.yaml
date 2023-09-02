@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: productpage-ingress
+spec:
+  rules:
+  - host: productpage.istio.qy.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: productpage
+          servicePort: 9080
