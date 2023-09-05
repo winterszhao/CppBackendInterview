@@ -548,8 +548,6 @@ spec:
           protocol: TCP
 ```
 
-
-
 ## Service
 
 通过Deployment创建一个高可用的服务，每个Pod都会有一个内部集群IP，会存在以下问题：
