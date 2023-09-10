@@ -214,9 +214,9 @@ CentOS Linux release 7.5.1804 (Core)
 
 ```powershell
 # 主机名成解析 编辑三台服务器的/etc/hosts文件，添加下面内容
-192.168.109.100  master
-192.168.109.101  node1
-192.168.109.102  node2
+192.168.86.100  master
+192.168.86.101  node1
+192.168.86.102  node2
 ```
 3） 时间同步
 
@@ -375,7 +375,7 @@ gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
        http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 
 # 安装kubeadm、kubelet和kubectl
-[root@master ~]# yum install --setopt=obsoletes=0 kubeadm-1.24.0-0 kubelet-1.24.0-0 kubectl-1.24.0-0 -y
+[root@master ~]# yum install --setopt=obsoletes=0 kubeadm-1.17.4-0 kubelet-1.17.4-0 kubectl-1.17.4-0 -y
 
 # 配置kubelet的cgroup
 # 编辑/etc/sysconfig/kubelet，添加下面的配置
@@ -431,10 +431,10 @@ done
 ~~~powershell
 # 创建集群
 [root@master ~]# kubeadm init \
-	--kubernetes-version=v1.24.9 \
+	--kubernetes-version=v1.17.4 \
     --pod-network-cidr=10.244.0.0/16 \
     --service-cidr=10.96.0.0/12 \
-    --apiserver-advertise-address=10.0.16.12
+    --apiserver-advertise-address=192.168.86.100
 
 # 创建必要文件
 [root@master ~]# mkdir -p $HOME/.kube
@@ -447,10 +447,20 @@ done
 
 ~~~powershell
 # 将node节点加入集群
-[root@master ~]# kubeadm join 192.168.137.100:6443 \
+[root@master ~]# kubeadm join 192.168.86.100:6443 \
 	--token ekl7dw.dai6oltolmll2usl \
 	--discovery-token-ca-cert-hash \
 	sha256:8d35ca473746bccee158f9369915209464cf7f82e3f29a3c8713374a0a60a789 
+	
+kubeadm join 192.168.86.100:6443 \
+	--token c3vsi1.7tamc3gz8t05qe39 \
+	--discovery-token-ca-cert-hash \
+	sha256:7a528897e43537e5277a50ea0e71ab6d482541dd288c93fed2b0bd626a276b82
+# [token] kubeadm token list
+# [sha256] openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+kubeadm join --token [TOKEN] 10.3.14.193:6443 --discovery-token-ca-cert-hash sha256:[SHA256]
+
+
 
 # 查看集群状态 此时的集群状态为NotReady，这是因为还没有配置网络插件
 [root@master ~]# kubectl get nodes
