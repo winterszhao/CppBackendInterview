@@ -30,7 +30,7 @@
 1. 建立**实时数据管道**，用来可靠的在系统或应用程序之间获取数据。
 2. 构建**实时流应用程序**，以转化或响应数据流。
 
-​	![](C:\Users\winterszhao\Desktop\面试\kafka\图片1.png)
+​	![](图片1.png)
 
 1. **Producers：**生产者，应用程序投递消息
 2. **Consumers：**消费者，应用程序消费消息。
@@ -63,6 +63,7 @@ kafka-topics.sh --zookeeper [zookeeper cluster ip]:2181 --delete --topic winters
 
 **基准测试（benchmark testing）：**是一种测量和评估软件性能指标的活动。我们可以通过基准测试，了解到软件、硬件的性能水平。主要测试负载的执行时间、传输速度、吞吐量、资源占用率等。生产5000W
 
+<<<<<<< Updated upstream
 **单分区单副本：**分区partitions是什么？？？差不多一秒10多万条，10多M
 
 
@@ -84,3 +85,50 @@ kafka-topics.sh --zookeeper [zookeeper cluster ip]:2181 --delete --topic winters
 **consumer group消费者组：**消费者分组内，一个分区只能对应一个消费者来消费。n个分区最多n个消费者，多出的消费者消费不到数据。多个分区一个消费者？？？
 
 **生产者幂等性和事务：**一次生产和多次生产操作的结果是一致的。
+=======
+单分区单副本：**分区partitions是什么，有什么用？？？**差不多一秒10多万条，10多M
+
+**消费者组有什么用？**如果消费者的group.id是一样的，那么他们在同一个消费组中，同一个消费者组共同消费topic中的数据
+
+**offset位于分区的哪个位置？**每个消费者都有一个offset，消费者挂掉重启后继续从offset拉数据。一批一批的拉数据
+
+## Kafka概念
+
+**broker：**kafka的一个服务器，无状态，由zookeeper维护集群状态。
+
+**zookeeper集群：**保存着kafka相关的一些元数据，使用kafkfatool工具可以看到（多少个topic，partition，consumer等），zk主要用于通知生产者和消费者kafka集群中有新的broker加入，或者kafka集群中出现故障的broker。
+
+**应用：**
+
+- **生产者：**推送数据给broker的topic
+
+- **消费者：**拉数据从broker的topic
+
+  **消费者组：**同一个groupid的消费者为一个组，组内的消费者一起消费主题的所有分区数据。
+
+**分区partition：**可以将一个topic的数据分布式存储在不同的broker上，解决单文件的io瓶颈。
+
+**副本replication：**保证数据某个服务器故障时，数据仍然可用
+
+
+
+```c++
+
+TBalanceInfo.stScore
+int CGameScore::SetGameScoreEx(CTable *pstTable, int iGameID, CPlayer *pstPlayer,
+                               const TUserGameScore *pstGameScore) ;
+
+
+// 分数和进入分数相比>才是赢
+bool bIsWin = pstGameScore->ai64Para[EUSP_PARA_WINCOUNT] > 0;
+pstPlayer->SetLastRoundWinFlag(bIsWin);
+m_bLastRoundWinFlag
+```
+
+
+
+| 总人数 | 胜率0  | 对局0 | 赢豆0  |
+| ------ | ------ | ----- | ------ |
+| 303641 | 149267 | 33455 | 149628 |
+
+>>>>>>> Stashed changes

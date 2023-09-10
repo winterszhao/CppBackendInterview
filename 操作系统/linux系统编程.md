@@ -43,6 +43,7 @@ int lstat(const char *pathname, struct stat *buf);	// 不会穿透，看到是�
 						// 4位文件类型（普通文件，目录文件，）+3位特殊权限位+用户rwx组rwx其他rwx
 int link(const char *oldpath, const char *newpath);	// 创建硬链接（创建dentry）
 int unlink(const char *pathname);					// 删除硬链接（删除dentry，系统等所有打开该文件的进程关闭该文件，才会挑时间释放掉）
+dup			// 旧的文件描述符，新的文件描述符指向相同的dentry
 
 opendir
 readdir		// 返回目录项指针，一次读一个，读到文件尾NULL，读到文件
@@ -53,15 +54,11 @@ readdir		// 返回目录项指针，一次读一个，读到文件尾NULL，读�
 | 文件 | 文件内容可以被查看cat,more,less | 内容可以被修改vi，>          | 可以运行产生一个进程./文件名 |
 | 目录 | 目录可以被浏览ls，tree          | 创建，删除，修改目录中的文件 | 可以被进入，cd               |
 
-
-
 dentry ---------------->    inode  -----------------> 磁盘
 
 文件路径                       磁盘位置                    
 
 inode索引					引用计数
-
-
 
 **阻塞，非阻塞：**
 
@@ -82,6 +79,22 @@ struct task_struct {
     								// STDOUT_FILENO 标准输出 1
     								// STDERR_FILENO 标准出错 2
     								// 其他进程打开的文件信息，数组最大1024个
-}	// 结构体
+    
+    // 进程id
+    // 用户id和组id
+    // 进程状态
+    // 虚拟地址空间信息，mm的pgd指针指向页表
+    // 文件描述符表
+    // 进程切换时需要保存和恢复的CPU寄存器
+}
+```
+
+```c++
+int fork();	// 子进程返回0，父进程返回pid, 父子进程继续执行fork下面的指令
+			// 父子进程相同：刚fork后的用户空间，父子写内存时不同，读时共享写时赋值
+			// 父子不同PCB中的一些内容：pid，ppid, 进程运行时间，未决信号集，fork返回值
+			// 父子共享：文件描述符，mmap映射区
+execlp(file, arg...)	// args参数从args[0]开始，末尾加NULL哨兵
+exec(path, arg...)		// 路径来执行
 ```
 
