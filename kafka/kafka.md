@@ -55,80 +55,146 @@ kafka-topics.sh --zookeeper [zookeeper cluster ip]:2181 --delete --topic winters
 # 测试消费者
 ```
 
-**Kafka tools操作kafka：**一个kafka的客户端，浏览zookeeper的数据
-
-- Brokers：部署的kafka个数
-- Topics：kafka主题，__consumer_offsets
-- Consumers：消费者
-
-**基准测试（benchmark testing）：**是一种测量和评估软件性能指标的活动。我们可以通过基准测试，了解到软件、硬件的性能水平。主要测试负载的执行时间、传输速度、吞吐量、资源占用率等。生产5000W
-
-<<<<<<< Updated upstream
-**单分区单副本：**分区partitions是什么？？？差不多一秒10多万条，10多M
-
-
-
-
-
-
-
 ## Kafka概念
 
-**broker：**单个kafka进程
+**broker：**单个kafka进程，broker-id
+
+**zookeeper：**保存着kafka相关的一些元数据，使用kafkfatool工具可以看到（多少个topic，partition，consumer等），zk主要用于通知生产者和消费者kafka集群中有新的broker加入，或者kafka集群中出现故障的broker，主从partition。
 
 **topic：**一个topic有多个分区（怎么保证读出的数据有序），和多个副本
 
-- **partition分区：**数据分散存储，分区，将数据分在不同的机器上，解决单台机器IO瓶颈。
-- **replication副本：**数据备份，容错，确保某台机器出现故障时，数据仍然可用（partition的copy）。
-- **offset偏移量：**记录消费者消费到哪里了，拉模式，确保消费者宕机重启后还能从offset继续消费
+- **partition分区：**数据分散存储，分区，将数据分在不同的broker上，解决单台文件的IO瓶颈。
+- **replication副本：**数据备份，容灾，确保某台机器出现故障时，数据仍然可用（partition的copy）。
+- **offset偏移量：**记录每个消费者消费partition的位置，拉模式，确保消费者宕机重启后还能从offset继续消费。默认存储在zk中。
 
-**consumer group消费者组：**消费者分组内，一个分区只能对应一个消费者来消费。n个分区最多n个消费者，多出的消费者消费不到数据。多个分区一个消费者？？？
+**生产者：**向topic中生产数据
 
-**生产者幂等性和事务：**一次生产和多次生产操作的结果是一致的。
-=======
-单分区单副本：**分区partitions是什么，有什么用？？？**差不多一秒10多万条，10多M
+- **幂等性**(一次生产和多次生产操作的结果是一致的)：配置enable.idempotence，
+  1. 生产者生产数据时会增加一个producer id(生产者唯一编号)和sequence number(针对消息的一个递增序列)，
+  2. broker为每个topic的每个partition维护一个当前写成功的消息的最大PID-Sequence Number元组。
+  3. ack响应失败，生产者重试，kafka判断sequence number是否小于等于partition中消息对应的sequence。
+  4. broker失败重新选举新的leader时，去重机制仍然有效：因为 broker 的 topic 中存储的消息体中附带了 PID-sequence number 信息，且 leader 的所有消息都会被复制到 followers 中。当某个原来的 follower 被选举为新的 leader 时，它内部的消息中已经存储了PID-sequence number 信息，也就可以执行消息去重了。
+- **生产者分区写入策略：**多个分区生产者写哪个
+  1. **轮询：**默认，生产时key为null，轮询均匀分配分区。
+  2. **随机：**不用
+  3. **按key分配：**生产时相同key的分配到固定的几个分区，可能出现数据倾斜，某个key的数据太多，分区不均衡。
+- **乱序问题：**Kafka中单个partition是有序的，全局是乱序的（生产者生产到多个partition，消费者从多个partition消费）
+- **副本的acks：**leader和follower指的是partition，只有leader负责读写，follower副本分区只是用作容灾。
+  - ack:0不管是否写入成功直接返回，可能有数据丢失。
+  - ack:1 leader partition写完了就返回。
+  - ack:-1/all leader和所有副本都同步成功之后才返回。
 
-**消费者组有什么用？**如果消费者的group.id是一样的，那么他们在同一个消费组中，同一个消费者组共同消费topic中的数据
+**consumer group消费者组：**消费者分组groupd.id内，一个消费者组共同消费一个或多个Topic。一个分区最多只能对应一个消费者来消费，消费者多于partition，多出的消费者消费不到数据。
 
-**offset位于分区的哪个位置？**每个消费者都有一个offset，消费者挂掉重启后继续从offset拉数据。一批一批的拉数据
+- **消费者组的rebalance机制：**
 
-## Kafka概念
+  **不良影响：**Rebalance时消费者组下所有消费者都会通知工作，使用分配策略重新分配。
 
-**broker：**kafka的一个服务器，无状态，由zookeeper维护集群状态。
+  **触发时机：**
 
-**zookeeper集群：**保存着kafka相关的一些元数据，使用kafkfatool工具可以看到（多少个topic，partition，consumer等），zk主要用于通知生产者和消费者kafka集群中有新的broker加入，或者kafka集群中出现故障的broker。
+  1. 消费者的组中的消费者的数量发生变化
+  2. 订阅的topic的数量发生了变化
+  3. 分区数量发生变化
 
-**应用：**
+- **消费者分区消费策略：**
 
-- **生产者：**推送数据给broker的topic
+  - **Range范围分配策略：**针对**每个Topic的partition**平均分配给消费者，分区除消费者的余数，将余数均匀分给前面的消费者
 
-- **消费者：**拉数据从broker的topic
+    **算法公式：**n = 分区数量/消费者数量，m=分区数量%消费者数量，前m个消费者消费n+1个分区，剩余消费者消费n个
 
-  **消费者组：**同一个groupid的消费者为一个组，组内的消费者一起消费主题的所有分区数据。
+    **配置：**partition.assignment.strategy设置为org.apache.kafka.clients.consumer.RangeAssignor
 
-**分区partition：**可以将一个topic的数据分布式存储在不同的broker上，解决单文件的io瓶颈。
+  - **RoundRobin轮询：** **所有topic的所有分区**按照字典序排序（topic和分区的hashcode进行排序），然后通过轮询方式逐个将分区分配给每个消费者。
 
-**副本replication：**保证数据某个服务器故障时，数据仍然可用
+  - **Stricky粘性分配：**分区分配尽可能均匀，在**发生rebalance的时候分区的分配尽可能与上次分配保持相同**。没有发生rebalance是和轮询一致。减少了不必要的系统开销（某个事务正在进行，可能需要取消重新执行）
+
+## Kafka原理
+
+1. **Leader和Follower:** 
+
+   - Kafka中的Leader和Follower是相对分区有意义，不是相对broker。
+   - Kafka在创建topic的时候，会尽量分配分区的leader在不同的broker上。
+   - leader职责：读写数据
+   - follower职责：同步数据，参与选举（leader crash之后，会选举一个follower重新称为分区的leader）
+   - 注意和zookeeper区分：
+     -  ZK的leader负责读写，follower可以读取。
+     - Kafka的leader负责读写，follower不能读写数据（确保每个消费者消费的数据是一致的）
+
+2. **AR、ISR、OSR: **Kafka把followe按照不同状态分为三类: AR，ISPR，OSR
+
+   - **AR：**所有分区副本，Assigned Replicas分区所有副本
+
+   - **ISR：**正在同步的分区副本，In Sync Replicas所有与leader分区保持一定程度同步的分区，包括leader。
+   - **OSR:** 没有同步的分区副本，Out-of-Sync Replicas 与leader分区同步滞后过多的分区。
+   - AR = ISR + OSR，正常情况下所有follower副本都应该与leader副本保持同步，AR=ISR且OSR为空
+
+3. **Controller：**kafka启动时，会在所有的broker中选择一个controller
+
+   - 创建topic，添加partition，修改replications数量之类的管理任务都是由controller完成的。kafka分区leader的选举也是由controller决定的
+
+   - **Broker选举：**
+
+     1. kafka集群启动时，每个broker都会尝试取Zookeeper上注册成为Controller（ZK临时节点），有一个竞争成为Controller之后，其余broker会注册该节点的监视器。
+
+     2. 一旦临时节点状态发生变化，进行相应处理。如果Controller崩溃，其余broker重新竞选为Controller。
+
+4. **Partion副本Leader选举：**
+
+   - partion leader选举由controller决定，controller会将leader的改变直接通过rpc的方式通知需要为此做出相应的Broker
+
+   - **选举规则：**
+
+     1. controller读取当前分区的ISR，选择其中一个作为Leader。
+     2. 没有则选择一个存活的replicas作为Leader。
+     3. 所有replicas都宕机了，则新的leader为-1。
+
+   - **为什么不用ZK来选举Partiton的Leader：**ZK选举速度满。如果kafka一个broker上可能有多个leader，一旦崩溃，需要有多个leader选举，对ZK的压力比较大，可以通过ISR可以快速选举。
+
+   - **Leader负载均衡：**某个broker崩溃之后，partition副本的leader通过controller重新选举，会导致leader在broker上分布不均匀。通过下面的指令可以把partion副本leader分配到系统优先选择的broker上，确保leader是均匀分配的。
+
+     ```
+     bin/kafka-leader-election.sh
+     ```
+
+5. **生产消费流程：**
+
+   - **生产者生产流程：**
+
+     1. 通过zookeeper找leader partition所在的broker。
+
+        - `“/brokers/topics/主题名/partitions/分区名/state”`节点里面的数据的leader字段，找到该partition的leader所在的brokerid。
+
+        - `brokers/ids`可以查到broker的host和端口号
+
+     2. 发送消息broker，leader partion将数据写入本地log中。
+
+     3. 其余follower拉取并写入日志文件，返回ACK给Leader。
+
+     4. 接收到所有ISR中replica的ACK后，返回ACK给生产者。
+
+   - **消费者消费流程：**通过offset来确定自己可以消费的数据范围，并通过提交offset来跟踪消费进度，保证了单partition消费的有序性和容错性。
+     1. 通过Zookeeper找leader partition所在broker
+     2. 通过Zookeeper找消费者partition对应的offset。
+     3. 从offset往后顺序拉取数据
+     4. 提交offset（自动提交--每隔多少秒提交一次offset，手动提交--放入到事务中提交）
+   
+6. **Kafka数据存储形式：**
+
+## 高级API
+
+高级API：就是直接让Kafka帮助管理、处理分配、数据，开发起来比较简单，无需开发者关注底层细节，我i发做到细粒度的控制。
+
+- offset存储在ZK中，由kafkfa的rebalance来控制消费者分配的分区
+
+低级API：由编写的程序自己控制逻辑。可以做到细粒度的控制，原有的Kafka的策略会失效，需要我们自己来实现消费机制。
+
+- 自己来管理Offset，可以将offset存储在ZK，MYSQL，Redis，HBASE，Flink的状态存储。自己指定消费者拉某个分区的数据
+
+### Kafka监控
+
+Kafka-Eagle可视化工具，监控offset，lag，partition，leader等的变化
 
 
 
-```c++
+## 
 
-TBalanceInfo.stScore
-int CGameScore::SetGameScoreEx(CTable *pstTable, int iGameID, CPlayer *pstPlayer,
-                               const TUserGameScore *pstGameScore) ;
-
-
-// 分数和进入分数相比>才是赢
-bool bIsWin = pstGameScore->ai64Para[EUSP_PARA_WINCOUNT] > 0;
-pstPlayer->SetLastRoundWinFlag(bIsWin);
-m_bLastRoundWinFlag
-```
-
-
-
-| 总人数 | 胜率0  | 对局0 | 赢豆0  |
-| ------ | ------ | ----- | ------ |
-| 303641 | 149267 | 33455 | 149628 |
-
->>>>>>> Stashed changes
