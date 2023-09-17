@@ -171,14 +171,65 @@ kafka-topics.sh --zookeeper [zookeeper cluster ip]:2181 --delete --topic winters
      3. 其余follower拉取并写入日志文件，返回ACK给Leader。
 
      4. 接收到所有ISR中replica的ACK后，返回ACK给生产者。
-
    - **消费者消费流程：**通过offset来确定自己可以消费的数据范围，并通过提交offset来跟踪消费进度，保证了单partition消费的有序性和容错性。
-     1. 通过Zookeeper找leader partition所在broker
-     2. 通过Zookeeper找消费者partition对应的offset。
-     3. 从offset往后顺序拉取数据
+     1. 通过Zookeeper找leader partition所在broker，找消费者partition对应的offset
+     2. 从offset往后顺序拉取数据。
      4. 提交offset（自动提交--每隔多少秒提交一次offset，手动提交--放入到事务中提交）
+
+6. **Kafka数据存储形式：**topic->partition->segment段（包括三个文件.log数据，.index索引，.timeindex时间索引）
+
+   - leo：持久化每个partition leader对应的LEO，log end offset日志文件中下一条待写入消息的offset
+
+   - 每个日志文件名为起始偏移量（方便offset查找数据），每个日志文件最大为`[log.segment.bytes=1024*1024*1024]`1G
+
+   - **读取流程：**
+
+     1. 根据消费者的offset通过跳表找segment段
+     2. 计算一下当前segment段的offset，根据.index稀疏索引查到.log的区间
+     3. 在区间中用二分查找找具体的数据，消费
+
+     **写入流程：**根据leo来写
+
+     **删除流程：**消息定期清理，kafka的日志管理器根据kafka配置，一次删除一个segment段
+
+7. **kafka消息不丢失：**
+
+   - **broker数据不丢失：**通过partition的副本机制来保证。生产者通过分区的leader写入数据后，所有ISR的follower都会从leader复制数据，即使leader崩溃，follower中重新选举的leader仍然可用。
+
+   - **生产数据不丢失：**通过ACK机制配置成-1来保证。-1所有节点写入成功，1leader，0不管是否写入直接返回
+
+   - **消费者数据不丢失：**消费者自己保证消费成功之后再提交offset。
+
+     - Flink消息传递的语义：
+
+       - At-most once（只管数据消费到，不管有没有成功）
+       - At-least once（失败，重新从offset消费，有可能重复消费）
+       - Exactly once（事务性的保障，保证消息有且仅被处理一次，2PC）
+
+     - **重复消费：**
+
+       1. 未能正确提交新的offset，消费者从老的offset读，导致重复消费。
+       2. 处理消息时超时，会把未确认的消息发给其他消费者。
+
+       **解决：**做幂等
+
+8. **数据积压：**消费者处理不过来
+
+9. **数据清理：**log.cleaner.enable
+
+   **两种处理：**log.cleanup.policy，删除delete和压缩compaction
+
+   - **删除：**以段为单位删除日志，先删除segment跳表中的索引字段（保证不会被读），文件加一个.delete后缀，延迟file.delete.delays.ms后删除。
+     - **日志保留策略：**
+       - 基于时间：log.retention.ms默认5分钟，日志超过时间删除
+       - 基于日志大小：log.retention.bytes，日志所有段总大小超出限制删除
+       - 基于日志起始偏移量：起始偏移量小于 logStartOffset删除。
+   - **压缩：**针对key，会将相同的key对应的数据只保留一个版本。
+     - 执行前后每条消息的偏移不变，offset不在连续（删除了一些非最新value），可以基于log compaction恢复消费者最新状态。
+
    
-6. **Kafka数据存储形式：**
+
+   
 
 ## 高级API
 
