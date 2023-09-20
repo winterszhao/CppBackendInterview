@@ -1,5 +1,45 @@
 # Flink简介
 
+jdk：
+
+```shell
+# 安装jdk，默认路径/usr/lib/jvm
+yum install java-1.8.0-openjdk.x86_64
+yum install java-devel
+
+# java环境设置，vi /etc/profile
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.382.b05-1.el7_9.x86_64
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+```
+
+maven:
+
+```shell
+sudo mv -f apache-maven-3.9.4 /usr/local/
+
+# maven环境设置，sudo vim /etc/profile
+export MAVEN_HOME=/usr/local/apache-maven-3.9.4
+export PATH=${PATH}:${MAVEN_HOME}/bin
+```
+
+```shell
+source /etc/profile	# 使环境变量生效
+mvn -v
+```
+
+使用mven创建项目
+
+```shell
+mvn archetype:generate 
+	-DgroupId=com.example 				# 指定项目的Group ID（组织标识）
+	-DartifactId=my-app 				# 指定项目的Artifact ID（项目标识）
+	-DarchetypeArtifactId=maven-archetype-quickstart # 指定用于生成项目的原型
+	-DinteractiveMode=false				# 禁用交互模式
+```
+
+
+
 ## **Flink**
 
 **是什么？**基于数据流有状态计算
@@ -49,41 +89,18 @@ Flink是主从架构
 | 输入数据 | 有限数据集（有界，数据集可以是一段时间内的数据）             | 无限数据流（kafka等连续接收数据）                            |
 |          | 数据一致性（完整性：确保所有数据都会被处理，不漏数据。去重性：避免重复处理同一数据，保证结果的准确性） | 状态管理（计算中间结果，维护状态信息来跟踪数据处理过程）     |
 |          | 离线环境（通常在离线环境中进行，即数据已经被收集完毕后进行处理。可以在较为稳定的环境中进行，不需要实时响应和即时处理） | 可扩展性（水平扩展，通过并行提高吞吐量和处理能力）           |
+| 使用场景 | 对历史数据的处理，对时效性要求不高。 <br>但是对时效性要求高的场景并不适用（实时监控网站一场情况，实时监控道路拥堵情况，实时监控全国疫情爆发情况，事实监控网站成交情况） |                                                              |
 
+## Flink开发
 
-
-- **：**数据是一批处理一批
-  - **特点：**数据是有界的（时间范围），数据一旦产生不会更改，时效性低（一次处理很多数据，慢）
-    1. 
-    2. 
-    3. 
-    4. 
-    5. 
-    6. 
-  - **使用场景：**
-    - 对历史数据的处理，对时效性要求不高。
-    - 但是对时效性要求高的场景并不适用（实时监控网站一场情况，实时监控道路拥堵情况，实时监控全国疫情爆发情况，事实监控网站成交情况）
-- **：**逐条处理（来一条处理一条）
-  - **特点：**
-    1. 
-    2. 
-    3. 
-    4. 
-    5. 
-    6. 
-
-
-
-Flink架构：
-
-Flink安装部署：
-
-- Local
-- Standalone
-- Yarn
-  - Yarn-session
-  - per-job（client）
-  - application（cluster）
-- Flink入门案例
-  - 批处理（已过期）
-  - 流处理（DataStream API，Table API，SQL）
+1. **Flink分层API**
+   - SQL/Table API（最顶层）StreamTableEnvironment
+   - DataStream API（中间层）StreamExecutionEnvironment
+   - Stateful Function（最底层）
+2. **Flink程序开发流程**
+   1. 构建流式执行环境
+   2. 数据输入
+   3. 数据处理
+   4. 数据输出
+   5. 启动流式
+3. **需求：**使用Flink程序，进行Wordcount单词统计

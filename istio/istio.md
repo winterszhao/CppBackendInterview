@@ -1,10 +1,10 @@
 ## isito核心功能
 
-
+istio安装时需要看对k8s版本的支持情况，用的k8s版本1.17，isito版本1.11
 
 ## istio架构
 
-![arch](C:\Users\winterszhao\Desktop\学习计划\istio\pic\arch.svg)
+![arch](pic\arch.svg)
 
 **Enovy：**数据平面，作为服务的sidecar，代理服务的所有进出口流量。
 
